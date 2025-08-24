@@ -1,8 +1,26 @@
 import { useTypewriter, Cursor } from "react-simple-typewriter";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ArrowDown } from "lucide-react";
+
+// Utility to determine if dark mode is active (works for client-side only)
+function useDarkMode() {
+  const [dark, setDark] = useState(false);
+  useEffect(() => {
+    const isDark = document.documentElement.classList.contains("dark");
+    setDark(isDark);
+    const observer = new MutationObserver(() => {
+      setDark(document.documentElement.classList.contains("dark"));
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+    return () => observer.disconnect();
+  }, []);
+  return dark;
+}
 
 export const HeroSection = () => {
   const [text] = useTypewriter({
@@ -22,6 +40,9 @@ export const HeroSection = () => {
     await loadFull(engine);
   }, []);
 
+  // Detect theme and adjust particle background and text colors
+  const darkMode = useDarkMode();
+
   return (
     <section
       id="hero"
@@ -33,7 +54,7 @@ export const HeroSection = () => {
         init={particlesInit}
         className="absolute inset-0 z-0"
         options={{
-          background: { color: { value: "#0f172a" } },
+          background: { color: { value: darkMode ? "#0f172a" : "#f9fafb" } }, // light = zinc-50, dark = blue
           fpsLimit: 60,
           interactivity: {
             events: {
@@ -66,14 +87,29 @@ export const HeroSection = () => {
       {/* ------ HERO CONTENT ------- */}
       <div className="container max-w-4xl mx-auto text-center z-10">
         <div className="space-y-6">
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-white drop-shadow">
+          <h1
+            className={
+              `text-4xl md:text-6xl font-bold tracking-tight` +
+              (darkMode ? " text-white" : " text-gray-900")
+            }
+          >
             Hi, I'm <span className="text-primary">Akshat Chauhan</span>
           </h1>
-          <h2 className="text-2xl md:text-3xl font-semibold text-cyan-200 drop-shadow">
+          <h2
+            className={
+              `text-2xl md:text-3xl font-semibold` +
+              (darkMode ? " text-cyan-200" : " text-cyan-700")
+            }
+          >
             <span>{text}</span>
             <Cursor cursorColor="#38bdf8" />
           </h2>
-          <p className="text-lg md:text-xl text-blue-100 max-w-2xl mx-auto">
+          <p
+            className={
+              "text-lg md:text-xl max-w-2xl mx-auto" +
+              (darkMode ? " text-blue-100" : " text-gray-700")
+            }
+          >
             Student at Johns Hopkins University, passionate about building
             intelligent AI systems that make a difference.
           </p>
@@ -86,7 +122,9 @@ export const HeroSection = () => {
       </div>
 
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce z-10">
-        <span className="text-sm text-blue-200 mb-2">Scroll</span>
+        <span className={darkMode ? "text-blue-200" : "text-sky-700"}>
+          Scroll
+        </span>
         <ArrowDown className="h-5 w-5 text-primary" />
       </div>
     </section>

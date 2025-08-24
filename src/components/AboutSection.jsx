@@ -16,7 +16,7 @@ export const AboutSection = () => {
 
             <p className="text-muted-foreground">
               I’m pursuing my MSE in Computer Science at Johns Hopkins
-              University with a focus on AI and Machine Learning. I hold a
+              University with a focus on AI and Machine Learning. <br />I hold a
               B.Tech from VIT, with experience in deep learning, NLP, and data
               analytics.
             </p>
