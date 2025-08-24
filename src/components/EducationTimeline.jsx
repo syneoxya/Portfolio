@@ -29,8 +29,8 @@ const educationData = [
     subCards: [
       {
         role: "Research Assistant",
-        period: "June 2022 - September 2024",
-        description: "Ongoing AI/ML project collaboration with professor.",
+        period: "June 2022 - Ongoing",
+        description: "AI/ML project collaboration with professor.",
         icon: <FlaskConical className="h-5 w-5 text-purple-500" />,
       },
     ],
