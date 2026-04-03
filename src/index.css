@@ -59,6 +59,40 @@
       opacity: 0;
     }
   }
+
+  @keyframes tron-cycle-horizontal {
+    0% {
+      transform: translateX(0);
+      opacity: 0;
+    }
+    8% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(138vw);
+      opacity: 0;
+    }
+  }
+
+  @keyframes tron-cycle-vertical {
+    0% {
+      transform: translateY(0);
+      opacity: 0;
+    }
+    8% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(138vh);
+      opacity: 0;
+    }
+  }
 }
 
 @layer base {
@@ -68,7 +102,7 @@
 
     --card: 0 0% 100%;
 
-    --primary: 250 47% 60%;
+    --primary: 190 92% 42%;
     --primary-foreground: 210 40% 98%;
 
     --border: 214 32% 91%;
@@ -80,7 +114,7 @@
 
     --card: 222 47% 8%;
 
-    --primary: 250 65% 65%;
+    --primary: 188 100% 62%;
     --primary-foreground: 213 31% 91%;
 
     --border: 217 33% 20%;
@@ -123,7 +157,7 @@
 
 @utility text-glow {
   @apply relative;
-  text-shadow: 0 0 10px rgba(167, 139, 250, 0.5);
+  text-shadow: 0 0 10px rgba(34, 211, 238, 0.45);
 }
 
 @utility card-hover {
@@ -139,7 +173,7 @@
 
 @utility cosmic-button {
   @apply px-6 py-2 rounded-full bg-primary text-primary-foreground font-medium 
-         transition-all duration-300 hover:shadow-[0_0_10px_rgba(139,92,246,0.5)]
+         transition-all duration-300 hover:shadow-[0_0_10px_rgba(34,211,238,0.42)]
          hover:scale-105 active:scale-95;
 }
 

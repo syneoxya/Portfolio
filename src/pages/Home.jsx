@@ -14,11 +14,11 @@ import { CurrentFocusSection } from "../components/CurrentFocusSection";
 
 export const Home = () => {
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+    <div className="min-h-screen overflow-x-hidden bg-transparent text-foreground">
       <ThemeToggle />
       <StarBackground />
       <Navbar />
-      <main>
+      <main className="relative z-10">
         <HeroSection />
         <AboutSection />
         <CurrentFocusSection />

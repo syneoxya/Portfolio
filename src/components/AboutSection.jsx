@@ -38,7 +38,7 @@ export const AboutSection = () => {
                 Get In Touch
               </a>
               <a
-                href="https://drive.google.com/file/d/1N9ymFQYv7I4aS_p8393ZAJz8hLGaikyb/view?usp=drive_link"
+                href="https://drive.google.com/file/d/17dmgEM8aiDCS1A_CHvFaP86qAaMpyobG/view?usp=drive_link"
                 className="px-6 py-2 rounded-full border border-primary text-primary hover:bg-primary/10 transition-colors duration-300"
                 target="_blank"
                 rel="noopener noreferrer"
