@@ -12,17 +12,24 @@ export const StarBackground = () => {
     generateMeteors();
 
     const handleResize = () => {
-      generateStars();
+      window.clearTimeout(handleResize.resizeTimeout);
+      handleResize.resizeTimeout = window.setTimeout(() => {
+        generateStars();
+        generateMeteors();
+      }, 120);
     };
 
     window.addEventListener("resize", handleResize);
 
-    return () => window.removeEventListener("resize", handleResize);
+    return () => {
+      window.clearTimeout(handleResize.resizeTimeout);
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   const generateStars = () => {
     const numberOfStars = Math.floor(
-      (window.innerWidth * window.innerHeight) / 10000
+      (window.innerWidth * window.innerHeight) / 16000
     );
 
     const newStars = [];
@@ -42,7 +49,7 @@ export const StarBackground = () => {
   };
 
   const generateMeteors = () => {
-    const numberOfMeteors = 4;
+    const numberOfMeteors = window.innerWidth < 768 ? 2 : 3;
     const newMeteors = [];
 
     for (let i = 0; i < numberOfMeteors; i++) {

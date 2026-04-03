@@ -1,6 +1,6 @@
 import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion as Motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 export const ThemeToggle = () => {
@@ -8,7 +8,13 @@ export const ThemeToggle = () => {
 
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme");
-    if (storedTheme === "dark") {
+    const prefersDarkMode = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
+    const shouldUseDarkMode =
+      storedTheme === "dark" || (!storedTheme && prefersDarkMode);
+
+    if (shouldUseDarkMode) {
       setIsDarkMode(true);
       document.documentElement.classList.add("dark");
     } else {
@@ -41,7 +47,7 @@ export const ThemeToggle = () => {
       <span className="relative block w-7 h-7">
         <AnimatePresence initial={false} mode="wait">
           {isDarkMode ? (
-            <motion.span
+            <Motion.span
               key="sun"
               initial={{ rotate: 90, opacity: 0, y: 15 }}
               animate={{ rotate: 0, opacity: 1, y: 0 }}
@@ -50,9 +56,9 @@ export const ThemeToggle = () => {
               className="absolute inset-0 flex items-center justify-center"
             >
               <Sun className="h-7 w-7 text-yellow-300 drop-shadow" />
-            </motion.span>
+            </Motion.span>
           ) : (
-            <motion.span
+            <Motion.span
               key="moon"
               initial={{ rotate: -90, opacity: 0, y: -15 }}
               animate={{ rotate: 0, opacity: 1, y: 0 }}
@@ -61,7 +67,7 @@ export const ThemeToggle = () => {
               className="absolute inset-0 flex items-center justify-center"
             >
               <Moon className="h-7 w-7 text-blue-900 drop-shadow" />
-            </motion.span>
+            </Motion.span>
           )}
         </AnimatePresence>
       </span>

@@ -8,26 +8,32 @@ export const AboutSection = () => {
           About <span className="text-primary">Me</span>
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center">
+          <div className="space-y-6 text-center lg:text-left">
             <h3 className="text-2xl font-semibold">
-              CS Graduate Student & AI Enthusiast
+              Researcher Building Applied AI Systems
             </h3>
 
             <p className="text-muted-foreground">
-              I’m pursuing my MSE in Computer Science at Johns Hopkins
-              University with a focus on AI and Machine Learning. <br />I hold a
-              B.Tech from VIT, with experience in deep learning, NLP, and data
-              analytics.
+              I&apos;m pursuing my MSE in Computer Science at Johns Hopkins
+              University, after completing my B.Tech in Computer Science with a
+              specialization in AI and ML at VIT.
             </p>
 
             <p className="text-muted-foreground">
-              My work spans stock forecasting, deepfake detection, and scalable
-              AI solutions for industry and research, blending theory,
-              experimentation, and engineering.
+              My current work spans inverse reinforcement learning for trading,
+              diffusion-based policy learning for surgical camera pose
+              estimation, generative modeling for biology, and production ML
+              systems for real-world deployment.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 pt-4 justify-center">
+            <p className="text-muted-foreground">
+              I enjoy work that sits between research depth and engineering
+              execution: building models, validating them carefully, and turning
+              them into systems that other people can actually use.
+            </p>
+
+            <div className="flex flex-col justify-center gap-4 pt-4 sm:flex-row lg:justify-start">
               <a href="#contact" className="cosmic-button">
                 Get In Touch
               </a>
@@ -53,8 +59,8 @@ export const AboutSection = () => {
                     AI & Machine Learning
                   </h4>
                   <p className="text-muted-foreground">
-                    Deep learning, NLP, and vision for real-world challenges
-                    from finance to media authenticity.
+                    Deep learning, LLMs, RAG, NLP, and computer vision applied
+                    to finance, medical imaging, and generative biology.
                   </p>
                 </div>
               </div>
@@ -70,8 +76,9 @@ export const AboutSection = () => {
                     Research & Innovation
                   </h4>
                   <p className="text-muted-foreground">
-                    Experience in neural optimization, autonomous systems, and
-                    advanced medical AI.
+                    First-author and co-first-author research across
+                    forecasting, deepfake detection, and diffusion-based medical
+                    AI.
                   </p>
                 </div>
               </div>
@@ -87,8 +94,8 @@ export const AboutSection = () => {
                     Development & Engineering
                   </h4>
                   <p className="text-muted-foreground">
-                    Full-stack, cloud, and decentralized applications with
-                    expertise in Python, React, and Azure.
+                    End-to-end engineering with Python, FastAPI, React, cloud
+                    tooling, and production-oriented ML pipelines.
                   </p>
                 </div>
               </div>
