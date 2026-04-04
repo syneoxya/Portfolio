@@ -159,7 +159,7 @@ export const HeroSection = () => {
               <ArrowRight size={16} />
             </a>
             <a
-              href="https://drive.google.com/file/d/17dmgEM8aiDCS1A_CHvFaP86qAaMpyobG/view?usp=drive_link"
+              href="https://drive.google.com/file/d/17dmgEM8aiDCS1A_CHvFaP86qAaMpyobG/preview"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 rounded-full border border-primary px-6 py-2 text-primary transition-colors duration-300 hover:bg-primary/10"

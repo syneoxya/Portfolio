@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 const STEP_DURATION_MS = 320;
 const BIKE_RADIUS_PX = 5;
 const TRAIL_POINT_COUNT = 50;
+const MOBILE_TRAIL_POINT_COUNT = 10;
 
 const buildCircuitPath = (waypoints) => {
   const path = [];
@@ -126,6 +127,7 @@ const getSegmentStyle = (
 
 export const StarBackground = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isMobileView, setIsMobileView] = useState(false);
   const [gridSize, setGridSize] = useState({ columns: 12, rows: 9 });
   const [cellSizePx, setCellSizePx] = useState(56);
   const [cycles, setCycles] = useState([]);
@@ -149,7 +151,9 @@ export const StarBackground = () => {
 
   useEffect(() => {
     const updateGrid = () => {
-      const mobile = window.innerWidth < 768;
+      const mobile =
+        window.innerWidth < 768 ||
+        window.matchMedia("(pointer: coarse)").matches;
       const cellSize = mobile ? 42 : 56;
       const columns = Math.max(8, Math.ceil(window.innerWidth / cellSize));
       const rows = Math.max(10, Math.ceil(window.innerHeight / cellSize));
@@ -191,15 +195,22 @@ export const StarBackground = () => {
       );
 
       setCellSizePx(cellSize);
+      setIsMobileView(mobile);
       setGridSize({ columns, rows });
       setCycles([
         createCycle(0, circuitPaths[0], 0, "blue"),
         createCycle(1, circuitPaths[1], 0, "orange"),
-        createCycle(
-          2,
-          circuitPaths[2],
-          Math.floor(circuitPaths[2].length / 2),
-          "green"
+        ...(
+          mobile
+            ? []
+            : [
+                createCycle(
+                  2,
+                  circuitPaths[2],
+                  Math.floor(circuitPaths[2].length / 2),
+                  "green"
+                ),
+              ]
         ),
       ]);
       setElapsedMs(0);
@@ -221,7 +232,7 @@ export const StarBackground = () => {
   }, []);
 
   useEffect(() => {
-    if (!cycles.length) {
+    if (!cycles.length || isMobileView) {
       return undefined;
     }
 
@@ -238,7 +249,7 @@ export const StarBackground = () => {
     return () => {
       window.cancelAnimationFrame(frameId);
     };
-  }, [cycles.length]);
+  }, [cycles.length, isMobileView]);
 
   const cellWidth = useMemo(() => 100 / gridSize.columns, [gridSize.columns]);
   const cellHeight = useMemo(() => 100 / gridSize.rows, [gridSize.rows]);
@@ -251,6 +262,9 @@ export const StarBackground = () => {
     : "absolute inset-0 opacity-6 [background-image:linear-gradient(rgba(0,0,0,0.012)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.012)_1px,transparent_1px)]";
   const completedSteps = Math.floor(elapsedMs / STEP_DURATION_MS);
   const progress = (elapsedMs % STEP_DURATION_MS) / STEP_DURATION_MS;
+  const activeTrailPointCount = isMobileView
+    ? MOBILE_TRAIL_POINT_COUNT
+    : TRAIL_POINT_COUNT;
 
   return (
     <div
@@ -281,8 +295,8 @@ export const StarBackground = () => {
         }}
       />
 
-      {cycles.map((cycle) => (
-        (() => {
+      {!isMobileView &&
+        cycles.map((cycle) => {
           const currentIndex = cycle.offset + completedSteps;
           const currentPoint = getWrappedPoint(cycle.path, currentIndex);
           const nextPoint = getWrappedPoint(cycle.path, currentIndex + 1);
@@ -290,10 +304,10 @@ export const StarBackground = () => {
             x: currentPoint.x + (nextPoint.x - currentPoint.x) * progress,
             y: currentPoint.y + (nextPoint.y - currentPoint.y) * progress,
           };
-          const trailPoints = Array.from({ length: TRAIL_POINT_COUNT }, (_, index) =>
+          const trailPoints = Array.from({ length: activeTrailPointCount }, (_, index) =>
             getWrappedPoint(
               cycle.path,
-              currentIndex - (TRAIL_POINT_COUNT - 1 - index)
+              currentIndex - (activeTrailPointCount - 1 - index)
             )
           );
           const renderPoints = [...trailPoints, livePoint];
@@ -403,8 +417,7 @@ export const StarBackground = () => {
               />
             </div>
           );
-        })()
-      ))}
+        })}
     </div>
   );
 };
