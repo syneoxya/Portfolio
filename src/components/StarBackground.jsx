@@ -3,8 +3,6 @@ import { useEffect, useMemo, useState } from "react";
 const STEP_DURATION_MS = 320;
 const BIKE_RADIUS_PX = 5;
 const TRAIL_POINT_COUNT = 50;
-const MOBILE_TRAIL_POINT_COUNT = 10;
-
 const buildCircuitPath = (waypoints) => {
   const path = [];
 
@@ -157,33 +155,30 @@ export const StarBackground = () => {
       const cellSize = mobile ? 42 : 56;
       const columns = Math.max(8, Math.ceil(window.innerWidth / cellSize));
       const rows = Math.max(10, Math.ceil(window.innerHeight / cellSize));
-      const waypoints = mobile
-        ? [
-            { x: 1, y: 2 },
-            { x: Math.max(3, columns - 2), y: 2 },
-            { x: Math.max(3, columns - 2), y: 4 },
-            { x: Math.max(5, Math.floor(columns * 0.72)), y: 4 },
-            { x: Math.max(5, Math.floor(columns * 0.72)), y: Math.max(7, Math.floor(rows * 0.42)) },
-            { x: Math.max(2, Math.floor(columns * 0.22)), y: Math.max(7, Math.floor(rows * 0.42)) },
-            { x: Math.max(2, Math.floor(columns * 0.22)), y: Math.max(10, Math.floor(rows * 0.64)) },
-            { x: Math.max(4, Math.floor(columns * 0.78)), y: Math.max(10, Math.floor(rows * 0.64)) },
-            { x: Math.max(4, Math.floor(columns * 0.78)), y: Math.max(12, Math.floor(rows * 0.78)) },
-            { x: 1, y: Math.max(12, Math.floor(rows * 0.78)) },
-          ]
-        : [
-            { x: 2, y: 2 },
-            { x: columns - 3, y: 2 },
-            { x: columns - 3, y: 4 },
-            { x: Math.floor(columns * 0.68), y: 4 },
-            { x: Math.floor(columns * 0.68), y: Math.floor(rows * 0.36) },
-            { x: Math.floor(columns * 0.33), y: Math.floor(rows * 0.36) },
-            { x: Math.floor(columns * 0.33), y: Math.floor(rows * 0.57) },
-            { x: Math.floor(columns * 0.74), y: Math.floor(rows * 0.57) },
-            { x: Math.floor(columns * 0.74), y: Math.floor(rows * 0.78) },
-            { x: 3, y: Math.floor(rows * 0.78) },
-            { x: 3, y: Math.floor(rows * 0.23) },
-          ];
-      const laneOffsets = mobile ? [-0.5, 0, 0.5] : [-0.5, 0, 0.5];
+
+      setCellSizePx(cellSize);
+      setIsMobileView(mobile);
+      setGridSize({ columns, rows });
+      if (mobile) {
+        setCycles([]);
+        setElapsedMs(0);
+        return;
+      }
+
+      const waypoints = [
+        { x: 2, y: 2 },
+        { x: columns - 3, y: 2 },
+        { x: columns - 3, y: 4 },
+        { x: Math.floor(columns * 0.68), y: 4 },
+        { x: Math.floor(columns * 0.68), y: Math.floor(rows * 0.36) },
+        { x: Math.floor(columns * 0.33), y: Math.floor(rows * 0.36) },
+        { x: Math.floor(columns * 0.33), y: Math.floor(rows * 0.57) },
+        { x: Math.floor(columns * 0.74), y: Math.floor(rows * 0.57) },
+        { x: Math.floor(columns * 0.74), y: Math.floor(rows * 0.78) },
+        { x: 3, y: Math.floor(rows * 0.78) },
+        { x: 3, y: Math.floor(rows * 0.23) },
+      ];
+      const laneOffsets = [-0.5, 0, 0.5];
       const clampPoint = (point) => ({
         x: Math.max(1, Math.min(columns - 2, point.x)),
         y: Math.max(1, Math.min(rows - 2, point.y)),
@@ -194,23 +189,14 @@ export const StarBackground = () => {
         )
       );
 
-      setCellSizePx(cellSize);
-      setIsMobileView(mobile);
-      setGridSize({ columns, rows });
       setCycles([
         createCycle(0, circuitPaths[0], 0, "blue"),
         createCycle(1, circuitPaths[1], 0, "orange"),
-        ...(
-          mobile
-            ? []
-            : [
-                createCycle(
-                  2,
-                  circuitPaths[2],
-                  Math.floor(circuitPaths[2].length / 2),
-                  "green"
-                ),
-              ]
+        createCycle(
+          2,
+          circuitPaths[2],
+          Math.floor(circuitPaths[2].length / 2),
+          "green"
         ),
       ]);
       setElapsedMs(0);
@@ -262,9 +248,6 @@ export const StarBackground = () => {
     : "absolute inset-0 opacity-6 [background-image:linear-gradient(rgba(0,0,0,0.012)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.012)_1px,transparent_1px)]";
   const completedSteps = Math.floor(elapsedMs / STEP_DURATION_MS);
   const progress = (elapsedMs % STEP_DURATION_MS) / STEP_DURATION_MS;
-  const activeTrailPointCount = isMobileView
-    ? MOBILE_TRAIL_POINT_COUNT
-    : TRAIL_POINT_COUNT;
 
   return (
     <div
@@ -304,10 +287,10 @@ export const StarBackground = () => {
             x: currentPoint.x + (nextPoint.x - currentPoint.x) * progress,
             y: currentPoint.y + (nextPoint.y - currentPoint.y) * progress,
           };
-          const trailPoints = Array.from({ length: activeTrailPointCount }, (_, index) =>
+          const trailPoints = Array.from({ length: TRAIL_POINT_COUNT }, (_, index) =>
             getWrappedPoint(
               cycle.path,
-              currentIndex - (activeTrailPointCount - 1 - index)
+              currentIndex - (TRAIL_POINT_COUNT - 1 - index)
             )
           );
           const renderPoints = [...trailPoints, livePoint];
